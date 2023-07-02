@@ -13,7 +13,7 @@ logging.basicconfig()
 app = Client(":memory:", bot_token=bot_token, api_id=6, api_hash="eb06d4abfb49dc3eeb1aeb98ae0f581e")
 
 DOWNLOAD = "./"
-api_key = '261187gz7nyenfkfk6ttgx'
+
 
 @app.on_message(filters.command("start") & filters.chat(sudo_chats_id))
 async def start(_, message):
@@ -83,13 +83,7 @@ async def tg(_, message):
         return
 
 @app.on_message(filters.command("dood") & filters.chat(sudo_chats_id))
-async def dood(_, message):
-    api_url = 'https://api.doodapi.com/v1/files/upload'
-    file_path = ''
-    headers = {
-        'Authorization': api_key
-    }
-    
+async def dood(_, message):    
     if not message.reply_to_message:
         await message.reply_text("Reply To A File With /tg To Upload")
         return
@@ -97,6 +91,12 @@ async def dood(_, message):
         await message.reply_text("Reply To A File With /tg To Upload")
         return
     m = await message.reply_text("Downloading Document.")
+    api_url = 'https://api.doodapi.com/v1/files/upload'
+    api_key = '261187gz7nyenfkfk6ttgx'
+    file_path = ''
+    headers = {
+        'Authorization': api_key
+    }
     file_path = await message.reply_to_message.download()
     try:
         files = { 'file': open(file_path, 'rb')}
