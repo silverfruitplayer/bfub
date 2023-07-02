@@ -8,9 +8,12 @@ import re
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton, CallbackQuery
 import logging
 
-logging.basicconfig()
+logging.basicConfig(
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+    level=logging.INFO,
+)
 
-app = Client(":memory:", bot_token=bot_token, api_id=6, api_hash="eb06d4abfb49dc3eeb1aeb98ae0f581e")
+app = Client(":memory:", bot_token="6130122799:AAEYm0ZuR7pEVcMYLf-tbECxDaek0b30bAU", api_id=6, api_hash="eb06d4abfb49dc3eeb1aeb98ae0f581e")
 
 DOWNLOAD = "./"
 
@@ -91,31 +94,23 @@ async def dood(_, message):
         await message.reply_text("Reply To A File With /tg To Upload")
         return
     m = await message.reply_text("Downloading Document.")
-    api_url = 'https://api.doodapi.com/v1/files/upload'
-    api_key = '261187gz7nyenfkfk6ttgx'
+    api_url = 'https://doodapi.com/api/upload/server?key=261187gz7nyenfkfk6ttgx'
     file_path = ''
-    headers = {
-        'Authorization': api_key
-    }
     file_path = await message.reply_to_message.download()
     try:
         files = { 'file': open(file_path, 'rb')}
         await m.edit("Uploading Now to doodstream....")
-        r = requests.post(api_url, headers=headers, files=files)
+        r = requests.get(api_url, files=files)
         text = r.json()
         if r.ok:
-            file_id = text['file_id']
-            file_url = text['file_url']
-            x = f"""
-            Upload successful To DoodStream.\n**File ID:** {file_id}\n**File URL:** {file_url}"
-            """
-            await m.reply(x)
+            await m.reply(text)
             os.remove(file_path)
         else:
             return await m.edit("Failed.")
     except Exception as e:
         print(str(e))
         await m.edit(str(e))
-        return      
+        return
+        
 app.start()
 idle()
