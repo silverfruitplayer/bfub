@@ -1,3 +1,3 @@
-bot_token = "1475902278:AAFXOStsBL5XrdHS5ha2o51WgxnQltfK3tk"
-sudo_chats_id = [-1001185149206]
+bot_token = "6130122799:AAFf-ITVYUwYnPR2EZh7-SBUFK72VEjeGRM"
+sudo_chats_id = [--1001567280834]
 
