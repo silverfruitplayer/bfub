@@ -1,5 +1,5 @@
 from pyrogram import Client, filters, idle
-from config import bot_token, sudo_chats_id
+from config import sudo_chats_id
 import wget
 import requests
 import os
@@ -13,7 +13,7 @@ logging.basicConfig(
     level=logging.INFO,
 )
 
-app = Client(":memory:", bot_token="6130122799:AAEYm0ZuR7pEVcMYLf-tbECxDaek0b30bAU", api_id=6, api_hash="eb06d4abfb49dc3eeb1aeb98ae0f581e")
+app = Client(":memory:", bot_token="6130122799:AAH3iv_IKifV_LFzTswvrGF_UOXJMR2or1o", api_id=6, api_hash="eb06d4abfb49dc3eeb1aeb98ae0f581e")
 
 DOWNLOAD = "./"
 
