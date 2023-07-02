@@ -1,12 +1,14 @@
-from pyrogram import Client, filters
+from pyrogram import Client, filters, idle
 from config import bot_token, sudo_chats_id
 import wget
 import requests
 import os
 import time
 import re
-from pyrogram import filters
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton, CallbackQuery
+import logging
+
+logging.basicconfig()
 
 app = Client(":memory:", bot_token=bot_token, api_id=6, api_hash="eb06d4abfb49dc3eeb1aeb98ae0f581e")
 
@@ -115,34 +117,5 @@ async def dood(_, message):
         print(str(e))
         await m.edit(str(e))
         return      
-            
-            
-@app.on_message(filters.command("anon") & filters.chat(sudo_chats_id))
-async def tg(_, message):
-    file_path = ''
-    if not message.reply_to_message:
-        await message.reply_text("Reply To A File With /tg To Upload")
-        return
-    if not message.reply_to_message.media:
-        await message.reply_text("Reply To A File With /tg To Upload")
-        return
-    m = await message.reply_text("Downloading Document.")
-    file_path = await message.reply_to_message.download()
-    try:
-        files = { 'file': open(file_path, 'rb')}
-        await m.edit("Uploading....")
-        r = requests.post("api.anonfiles.com/upload", files=files)
-        text = r.json()
-        output = f"""
-**status:** `{text['status']}`
-**link:** {text['data']['file']['url']['full']}
-**id:** `{text['data']['file']['metadata']['id']}`
-**name:** `{text['data']['file']['metadata']['name']}`
-**size:** `{text['data']['file']['metadata']['size']['readable']}`"""
-        await message.reply_text(output)
-        os.remove(file_path)      
-    except Exception as e:
-        print(str(e))
-        await m.edit(str(e))
-        return
-app.run()
+app.start()
+idle()
