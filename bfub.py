@@ -104,9 +104,17 @@ async def dood(_, message):
         if r.ok:
             file_id = text['file_id']
             file_url = text['file_url']
-            await m.edit(f"Upload successful To DoodStream.\n**File ID:** {file_id}\n**File URL:** {file_url}")
+            x = f"""
+            Upload successful To DoodStream.\n**File ID:** {file_id}\n**File URL:** {file_url}"
+            """
+            await m.reply(x)
+            os.remove(file_path)
         else:
             return await m.edit("Failed.")
+    except Exception as e:
+        print(str(e))
+        await m.edit(str(e))
+        return      
             
             
 @app.on_message(filters.command("anon") & filters.chat(sudo_chats_id))
