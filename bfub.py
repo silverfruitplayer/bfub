@@ -94,13 +94,13 @@ async def dood(_, message):
         await message.reply_text("Reply To A File With /tg To Upload")
         return
     m = await message.reply_text("Downloading Document.")
-    api_url = 'https://doodapi.com/api/upload/server?key=261187gz7nyenfkfk6ttgx'
+    api_url = 'https://dio118p.dood.video/upload/01?261187gz7nyenfkfk6ttgx'
     file_path = ''
     file_path = await message.reply_to_message.download()
     try:
         files = { 'file': open(file_path, 'rb')}
         await m.edit("Uploading Now to doodstream....")
-        r = requests.get(api_url, files=files)
+        r = requests.post(api_url, files=files)
         text = r.json()
         if r.ok:
             await m.reply(text)
