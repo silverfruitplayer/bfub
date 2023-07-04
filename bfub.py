@@ -13,7 +13,7 @@ logging.basicConfig(
     level=logging.INFO,
 )
 
-app = Client(":memory:", bot_token="6130122799:AAFR_Ubokp3zSCFheVuRT9z0ulvzwvvWdng", api_id=6, api_hash="eb06d4abfb49dc3eeb1aeb98ae0f581e")
+app = Client(":memory:", bot_token="5877226547:AAEr-IzlMlo3OeX08vL41wNpjhMEqfywSk4", api_id=6, api_hash="eb06d4abfb49dc3eeb1aeb98ae0f581e")
 
 DOWNLOAD = "./"
 
@@ -111,6 +111,80 @@ async def dood(_, message):
         print(str(e))
         await m.edit(str(e))
         return
+
+@app.on_message(filters.command("vimeo") & filters.chat(sudo_chats_id))
+async def upload_video(_, message):
+    if not message.reply_to_message:
+        await message.reply("Reply To A File With /vimeo To Upload")
+        return
+    if not message.reply_to_message.media:
+        await message.reply("Reply To A File With /vimeo To Upload")
+        return
+
+    m = await message.reply("Downloading Document.")    
+
+    file_path = await message.reply_to_message.download(DOWNLOAD)
+    
+    headers = {
+        "Authorization": f"Bearer {ACCESS_TOKEN}",
+        "Content-Type": "application/json",
+        "Accept": "application/vnd.vimeo.*+json;version=3.4"
+    }
+
+    upload_url = f"https://api.vimeo.com/users/{USER_ID}/videos"
+    params = {
+        "access_token":ACCESS_TOKEN,
+        "upload": {
+            "approach": "tus",
+            "size": os.path.getsize(file_path)
+        }
+    }
+
+    try:
+        #async with app.http_client as session:
+        response = requests.post(upload_url, json=params, headers=headers)
+        r = response.json()
+        await m.reply(f"**vimeo upload link:** `{r['link']}`")      
+
+    except Exception as e:
+        print(str(e))
+        await m.edit(str(e))
+
+@app.on_message(filters.command("delete"))
+async def delete_video(client, message):
+    # Extract the video ID from the message text
+    video_id = message.text.split(" ")[1]
+
+    if not video_id:
+        return await message.reply("please provide video id")
+
+    endpoint = f"https://api.vimeo.com/videos/{video_id}"
+    headers = {
+        "Authorization": "ACCESS_TOKEN",
+        "Content-Type": "application/json",
+        "Accept": "application/vnd.vimeo.*+json;version=3.4"
+    }
+    response = requests.delete(endpoint, headers=headers)
+
+    if response.status_code == 204:
+        await message.reply("Video deleted successfully.")
+    else:
+        await message.reply("Failed to delete the video.")  
+
+@app.on_message(filters.command("down"))
+async def download_video(_, message):
+    if not message.reply_to_message:
+        await message.reply("Reply To A File With /vimeo To Upload")
+        return
+    if not message.reply_to_message.media:
+        await message.reply("Reply To A File With /vimeo To Upload")
+        return
+
+    m = await message.reply("Downloading Document.")
+    await message.reply_to_message.download(DOWNLOAD)
+    mp4_file = "video.mp4"
+    await app.send_video(message.chat.id, mp4_file)
+    os.remove(mp4_file)
         
 app.start()
 idle()
