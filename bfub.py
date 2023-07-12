@@ -13,7 +13,7 @@ logging.basicConfig(
     level=logging.INFO,
 )
 
-app = Client(":memory:", bot_token="5877226547:AAEr-IzlMlo3OeX08vL41wNpjhMEqfywSk4", api_id=6, api_hash="eb06d4abfb49dc3eeb1aeb98ae0f581e")
+app = Client(":memory:", bot_token="", api_id=6, api_hash="eb06d4abfb49dc3eeb1aeb98ae0f581e")
 
 DOWNLOAD = "./"
 
