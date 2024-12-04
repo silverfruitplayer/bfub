@@ -7,6 +7,9 @@ import time
 import re
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton, CallbackQuery
 import logging
+from gofilepy import GofileClient
+
+client = GofileClient()
 
 logging.basicConfig(
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
