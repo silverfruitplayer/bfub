@@ -85,6 +85,31 @@ async def tg(_, message):
         await m.edit(str(e))
         return
 
+@app.on_message(filters.command("gofile"))
+async def upload_to_gofile(_, message):
+    if not message.reply_to_message:
+        await message.reply("Reply To A File With /gofile To Upload")
+        return
+    if not message.reply_to_message.media:
+        await message.reply("Reply To A File With /gofile To Upload")
+        return
+
+    m = await message.reply("Downloading Document.")
+    file_path = await message.reply_to_message.download()
+
+    try:
+        # Corrected the open() function
+        response = client.upload(file=open(file_path, "rb"))
+        download_link = response.page_link
+        await m.reply(f"**File uploaded successfully!**\nDownload Link: {download_link}")
+        await asyncio.sleep(50)
+        os.remove(file_path)  # Remove the downloaded file after upload after 50 seconfs
+
+    except Exception as e:
+        print(str(e))
+        await m.reply(f"An error occurred: {str(e)}")
+
+
 @app.on_message(filters.command("dood") & filters.chat(sudo_chats_id))
 async def dood(_, message):    
     if not message.reply_to_message:
