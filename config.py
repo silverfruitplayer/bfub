@@ -1,3 +1,4 @@
-bot_token = "6130122799:AAFf-ITVYUwYnPR2EZh7-SBUFK72VEjeGRM"
+bot_token = ""
 sudo_chats_id = [-1001567280834]
-
+ACCESS_TOKEN = ""
+USER_ID = []
